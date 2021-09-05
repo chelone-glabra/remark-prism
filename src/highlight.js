@@ -18,7 +18,7 @@ const PLUGINS = [
   'keep-markup',
   'line-numbers',
   'show-invisibles',
-  'show-laungauge',
+  'show-language',
   'treeview',
   'toolbar',
 ];
