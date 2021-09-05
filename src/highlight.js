@@ -11,13 +11,16 @@ const getLoader = require('prismjs/dependencies');
 const PLUGINS = [
   'autolinker',
   'command-line',
+  'copy-to-clipboard',
   'data-uri-highlight',
   'diff-highlight',
   'inline-color',
   'keep-markup',
   'line-numbers',
   'show-invisibles',
+  'show-laungauge',
   'treeview',
+  'toolbar',
 ];
 
 const domHighlight = (value, attrs = {}, range = []) => {
