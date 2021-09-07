@@ -130,8 +130,10 @@ module.exports = (options = {}) => (tree) => {
       'div',
       { className: `remark-highlight` },
       [
-        h('div', { className: 'remark-highlight-title' }, [
-          { type: 'text', value: filename },
+        h('div', { className: 'remark-highlight-title-container' }, [
+          h('span', { className: 'remark-highlight-title' }, [
+            { type: 'text', value: filename },
+          ]),
         ]),
         h(
           'pre',
