@@ -45,6 +45,10 @@ const parseLang = (str) => {
     return Array.isArray(m) ? m.filter(Boolean) : [];
   };
 
+  const regex = /:(.*)/gm;
+
+  const filename = regex.exec(str)[1];
+
   const [lang = 'unknown'] = match(/^[a-zA-Z\d-]*/g);
   const selectors = match(/\[(.*?)\]/g).join('');
 
@@ -61,6 +65,7 @@ const parseLang = (str) => {
 
   return {
     lang,
+    filename,
     legend,
     range,
     attrs: {
@@ -98,7 +103,9 @@ module.exports = (options = {}) => (tree) => {
       .join(' ');
 
     const langToken = node.lang || langClassName;
-    const { lang = 'unknown', attrs, legend, range } = parseLang(langToken);
+    const { lang = 'unknown', filename, attrs, legend, range } = parseLang(
+      langToken,
+    );
     const { class: className = '', ...restAttrs } = attrs;
 
     const code = h(
@@ -119,18 +126,28 @@ module.exports = (options = {}) => (tree) => {
 
     const pre = h(
       'div',
-      { className: `remark-highlight` },
+      {
+        className: 'remark-highlight-title',
+      },
       [
+        h('div', {}, [filename]),
         h(
-          'pre',
-          {
-            ...restAttrs,
-            className: className.split(/\s/),
-          },
-          [code],
+          'div',
+          { className: `remark-highlight` },
+          [
+            h(
+              'pre',
+              {
+                ...restAttrs,
+                className: className.split(/\s/),
+              },
+              [code],
+            ),
+            legend ? h('legend', {}, [{ type: 'text', value: legend }]) : null,
+          ].filter(Boolean),
+          h(),
         ),
-        legend ? h('legend', {}, [{ type: 'text', value: legend }]) : null,
-      ].filter(Boolean),
+      ],
     );
 
     return /^inline/.test(type) ? code : pre;
