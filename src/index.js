@@ -124,30 +124,26 @@ module.exports = (options = {}) => (tree) => {
       }),
     );
 
+    console.dir(filename, { depth: null });
+
     const pre = h(
       'div',
-      {
-        className: 'remark-highlight-title',
-      },
+      { className: `remark-highlight` },
       [
-        h('div', {}, [filename]),
+        h('div', { className: 'remark-highlight-title' }, [
+          { type: 'text', value: filename },
+        ]),
         h(
-          'div',
-          { className: `remark-highlight` },
-          [
-            h(
-              'pre',
-              {
-                ...restAttrs,
-                className: className.split(/\s/),
-              },
-              [code],
-            ),
-            legend ? h('legend', {}, [{ type: 'text', value: legend }]) : null,
-          ].filter(Boolean),
-          h(),
+          'pre',
+          {
+            ...restAttrs,
+            className: className.split(/\s/),
+          },
+          [code],
         ),
-      ],
+        legend ? h('legend', {}, [{ type: 'text', value: legend }]) : null,
+      ].filter(Boolean),
+      h(),
     );
 
     return /^inline/.test(type) ? code : pre;
