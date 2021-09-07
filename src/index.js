@@ -46,8 +46,8 @@ const parseLang = (str) => {
   };
 
   const regex = /:(.*)/gm;
-
-  const filename = regex.exec(str)[1];
+  const filename_reg_result = regex.exec(str);
+  const filename = filename_reg_result ? filename_reg_result[1] : '';
 
   const [lang = 'unknown'] = match(/^[a-zA-Z\d-]*/g);
   const selectors = match(/\[(.*?)\]/g).join('');
@@ -124,17 +124,19 @@ module.exports = (options = {}) => (tree) => {
       }),
     );
 
-    console.dir(filename, { depth: null });
+    const filenameElement = filename
+      ? h('div', { className: 'remark-highlight-title-container' }, [
+          h('span', { className: 'remark-highlight-title' }, [
+            { type: 'text', value: filename },
+          ]),
+        ])
+      : '';
 
     const pre = h(
       'div',
       { className: `remark-highlight` },
       [
-        h('div', { className: 'remark-highlight-title-container' }, [
-          h('span', { className: 'remark-highlight-title' }, [
-            { type: 'text', value: filename },
-          ]),
-        ]),
+        filenameElement,
         h(
           'pre',
           {
